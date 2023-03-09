@@ -1,4 +1,5 @@
-FROM tensorflow/tensorflow:latest-py3
+#latest-py3
+FROM tensorflow/tensorflow:1.15.0-py3
 
 ARG USERNAME=paraglidable
 RUN useradd -m $USERNAME
@@ -12,7 +13,8 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends libgrib-api-
 RUN apt-get -y update && apt-get install -y --no-install-recommends libeccodes-dev libeccodes0
 
 # tex2svg
-RUN npm install -y --no-install-recommends --global mathjax-node-cli
+#RUN npm install -y --no-install-recommends --global mathjax-node-cli
+RUN npm install -y --no-install-recommends --global mathjax@3
 
 # Add sudo support
 RUN apt-get install -y sudo \
@@ -22,7 +24,8 @@ RUN apt-get install -y sudo \
 
 USER $USERNAME
 
-RUN sudo pip install glob3 tqdm colorama requests pandas matplotlib pillow numba pyproj jupyter
-RUN sudo pip install pygrib
-RUN sudo pip install https://github.com/matplotlib/basemap/archive/master.zip
+RUN sudo -H pip install glob2 tqdm colorama requests pandas matplotlib pillow numba pyproj jupyter
+RUN sudo -H pip install pygrib
+#RUN sudo -H pip install https://github.com/matplotlib/basemap/archive/master.zip
+RUN sudo -H pip install basemap
 

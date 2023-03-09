@@ -23,10 +23,10 @@ The main dependencies are:
 ## Installation
 
 ```bash
-git clone https://github.com/AntoineMeler/Paraglidable.git
+git clone -it -v E:\prg\Paraglidable:/workspaces/Paraglidable
 
-docker build -t paraglidable Paraglidable/docker/
-docker run -it -p 8001:80 -p 8888:8888 -v $(pwd)/Paraglidable:/workspaces/Paraglidable paraglidable
+docker build -t paraglidable2 Paraglidable/docker/
+docker run -it -v E:\prg\Paraglidable:/workspaces/Paraglidable paraglidable2
 
 cd /workspaces/Paraglidable/scripts/
 python download_data.py             # Download training weather and flights data (200MB)
