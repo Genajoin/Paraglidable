@@ -243,7 +243,7 @@ class Dataset:
             for k_dc, dc in enumerate(lines):
                 for flight in self.flights_by_cell_day[dc]:
                     # Calculate super-resolution cell position
-                    lat, lon = flight[1][3], flight[1][4]
+                    lat, lon = flight[1][1], flight[1][2]
                     sr_x = int(((lon + 0.5) % 1.0) * super_resolution)
                     sr_y = int(((lat + 0.5) % 1.0) * super_resolution)
                     flight_list[sr_y * super_resolution + sr_x][k_dc].append(flight)
@@ -255,16 +255,16 @@ class Dataset:
                     if len(daycell) > 0:
                         if regression:
                             for k_alt in range(nb_altitudes):
-                                flown = sum(1 for f in daycell if self._k_altitude(f[1][5]) == k_alt)
-                                crossed = sum(1 for f in daycell if self._k_altitude(f[1][5]) == k_alt and f[1][0] >= points_limit)
+                                flown = sum(1 for f in daycell if self._k_altitude(f[1][3]) == k_alt)
+                                crossed = sum(1 for f in daycell if self._k_altitude(f[1][3]) == k_alt and f[1][0] >= points_limit)
 
                                 res[0][res_line, k_alt] = flown
                                 res[1][res_line, k_alt] = crossed
                                 res[2][res_line, k_alt] = flown
                                 res[3][res_line, k_alt] = flown
                         else:
-                            flown_alts = {self._k_altitude(f[1][5]) for f in daycell}
-                            crossed_alts = {self._k_altitude(f[1][5]) for f in daycell if f[1][0] >= points_limit}
+                            flown_alts = {self._k_altitude(f[1][3]) for f in daycell}
+                            crossed_alts = {self._k_altitude(f[1][3]) for f in daycell if f[1][0] >= points_limit}
 
                             for alt in flown_alts:
                                 res[0][res_line, alt] = 1.0

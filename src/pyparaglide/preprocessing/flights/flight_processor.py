@@ -621,13 +621,15 @@ def create_spots_pkls(flights: List[Dict],
                 record = (
                     f['datetime'],
                     (
-                        float(f.get('score', 0.0) or 0.0),
-                        float(f.get('alt', 0.0) or 0.0),
-                        float(f.get('plaf', 0.0) or 0.0),
-                        float(f['lat']),
-                        float(f['lon']),
-                        float(f.get('takeoff_alt', 0.0) or 0.0),
-                        float(f.get('mountainess', 0.5) or 0.5)
+                        float(f.get('score', 0.0) or 0.0),        # [1][0]
+                        float(f['lat']),                          # [1][1]
+                        float(f['lon']),                          # [1][2]
+                        # TODO: optimize - could compute takeoff_alt on-the-fly from DEM
+                        # using lat/lon instead of storing in PKL (saves ~16 bytes/flight)
+                        float(f.get('takeoff_alt', 0.0) or 0.0), # [1][3] - from DEM/SRTM
+                        # TODO: optimize - could compute mountainess on-the-fly from DEM
+                        # or store per-cell instead of per-flight (currently duplicated)
+                        float(f.get('mountainess', 0.5) or 0.5)  # [1][4] - from DEM/SRTM
                     )
                 )
 

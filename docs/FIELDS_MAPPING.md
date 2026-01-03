@@ -174,3 +174,40 @@ with open('neural_network/bin/data/flights_by_cell_day_spot.pkl', 'wb') as f:
 - 46_13 (46°N, 13°E) — 6,393 полёта
 - 45_13 (45°N, 13°E) — 3,468 полётов
 - 46_14 (46°N, 14°E) — 1,049 полётов
+
+---
+
+## Обновление PKL структуры (Issue #16)
+
+**Дата:** 2026-01-03
+
+### Удалены неиспользуемые поля из CELLS model
+
+Поскольку xContest JSON не предоставляет данные о высоте (`alt`, `plaf`), а эти поля не использовались в обучении, они были удалены из PKL структуры.
+
+**Было (7 полей):**
+```python
+(datetime, (score, alt, plaf, lat, lon, takeoff_alt, mountainess))
+#         [0]    [1][0] [1][1] [1][2] [1][3] [1][4] [1][5]      [1][6]
+```
+
+**Стало (5 полей):**
+```python
+(datetime, (score, lat, lon, takeoff_alt, mountainess))
+#         [0]    [1][0] [1][1] [1][2] [1][3]      [1][4]
+```
+
+### Убраны:
+- **`alt`** (f[1][1]) - был 0.0, не использовался
+- **`plaf`** (f[1][2]) - был avgSpeed, семантически неверно, не использовался
+
+### Остались:
+- **`score`** (f[1][0]) - используется для crossability threshold
+- **`lat`** (f[1][1]) - используется для super-resolution
+- **`lon`** (f[1][2]) - используется для super-resolution
+- **`takeoff_alt`** (f[1][3]) - из DEM/SRTM, используется для altitude binning
+- **`mountainess`** (f[1][4]) - из DEM/SRTM, используется в модели
+
+### TODO для будущей оптимизации:
+- `takeoff_alt` можно вычислять на лету из DEM по lat/lon (~16 байт/полёт)
+- `mountainess` хранится дублированно (per-flight и per-cell в отдельном файле)
