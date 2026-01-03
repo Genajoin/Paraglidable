@@ -66,17 +66,15 @@
 
 Список полётов по ячейкам и дням.
 
-- Тип: `List[List[Tuple[str, Tuple[float, float, float, float, float, float, float]]]]`
+- Тип: `List[List[Tuple[str, Tuple[float, float, float, float, float]]]]`
 - Размер списка: `nb_days * nb_cells`
 - Индекс: `day_idx * nb_cells + cell_idx`
 - Один полёт:
-  - `("YYYY-MM-DD HH:MM:SS", (score, alt, plaf, lat, lon, takeoff_alt, mountainess))`
+  - `("YYYY-MM-DD HH:MM:SS", (score, lat, lon, takeoff_alt, mountainess))`
     - `score`: XC score (баллы) из `parse_igc_with_libs.py`, используется для crossability (порог 60)
-    - `alt`: дополнительный параметр (в коде напрямую не используется)
-    - `plaf`: потолок (макс. высота), используется в аналитике
     - `lat`, `lon`: координаты старта
-    - `takeoff_alt`: высота старта (используется для kAltitude)
-    - `mountainess`: дубль значения по ячейке
+    - `takeoff_alt`: высота старта из DEM/SRTM (используется для kAltitude)
+    - `mountainess`: гористость из DEM/SRTM (дубль значения по ячейке)
 
 ### 1.8 `spots.pkl`, `spots_merged.pkl`
 
